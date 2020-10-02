@@ -3,8 +3,8 @@
 
 import React from 'react';
 
-function Greeting({initialName}) {
-  const [name, setName] = React.useState(initialName || '');
+function Greeting({initialName = ''}) {
+  const [name, setName] = React.useState(initialName);
 
   return (
     <div>
@@ -15,6 +15,7 @@ function Greeting({initialName}) {
             setName(event.target.value);
           }}
           id="name"
+          value={name}
         />
       </form>
       {name ? <strong>Hello {name}</strong> : 'Please type your name'}
