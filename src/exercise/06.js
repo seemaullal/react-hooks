@@ -16,17 +16,17 @@ function PokemonInfo({pokemonName}) {
     error: null,
   });
   React.useEffect(() => {
-    setState({...state, status: 'idle'});
+    setState({status: 'idle'});
     if (!pokemonName) {
       return;
     }
-    setState({...state, status: 'pending'});
+    setState({status: 'pending'});
     fetchPokemon(pokemonName)
       .then(pokemonData => {
-        setState({...state, pokemon: pokemonData, status: 'resolved'});
+        setState({pokemon: pokemonData, status: 'resolved'});
       })
       .catch(error => {
-        setState({...state, error, status: 'rejected'});
+        setState({error, status: 'rejected'});
       });
   }, [pokemonName]);
   if (state.status === 'rejected') {
@@ -40,8 +40,10 @@ function PokemonInfo({pokemonName}) {
     return 'Submit a pokemon';
   } else if (state.status === 'pending') {
     return <PokemonInfoFallback name={pokemonName} />;
-  } else {
+  } else if (state.status === 'resolved') {
     return <PokemonDataView pokemon={state.pokemon} />;
+  } else {
+    throw new Error('unexpected status');
   }
 }
 
